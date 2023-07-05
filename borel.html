@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pagination</title>
+  <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="image-container">
+      <div v-for="(image, index) in paginatedImages" :key="index">
+        <img :src="image" alt="image" width="200px" height="200px">
+      </div>
+    </div>
+    <div class="pagination">
+      <button v-if="currentPage > 1" @click="currentPage--">Previous</button>
+      <button v-for="page in pages" :key="page" @click="currentPage = page">{{ page }}</button>
+      <button v-if="currentPage < pageCount" @click="currentPage++">Next</button>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        images: [
+          '1.PNG',
+          '2.PNG',
+          '3.jfif',
+          '4.jfif',
+          '5.jfif',
+          '6.jfif',
+          '7.jfif',
+          '8.jfif',
+          '9.jfif',
+          '10.jfif',
+          '11.jfif',
+          '12.jfif',
+          '13.jfif',
+          '14.jfif',
+          '15.jfif',
+          '16.jfif',
+          '17.jfif',
+          '18.jfif',
+          '19.jfif',
+          '20.jfif'
+        ],
+        pageSize: 5,
+        currentPage: 1
+      },
+      computed: {
+        pageCount() {
+          return Math.ceil(this.images.length / this.pageSize);
+        },
+        pages() {
+          const pages = [];
+          for (let i = 1; i <= this.pageCount; i++) {
+            pages.push(i);
+          }
+          return pages;
+        },
+        paginatedImages() {
+          const startIndex = (this.currentPage - 1) * this.pageSize;
+          const endIndex = startIndex + this.pageSize;
+          return this.images.slice(startIndex, endIndex);
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .image-container > div {
+      margin: 0 10px;
+    }
+  </style>
+</body>
+</html>
